@@ -1,0 +1,423 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+model admin {
+  id                      Int                       @id @default(autoincrement())
+  userName                String                    @unique
+  fname                   String?                   @db.VarChar(255)
+  lname                   String?                   @db.VarChar(255)
+  fullname                String?                   @db.VarChar(255)
+  role                    String                    @default("admin")
+  permission              Json?
+  email                   String                    @unique
+  avatarPath              String?                   @db.VarChar(255)
+  avatarSrc               String?                   @db.VarChar(255)
+  phone                   String                    @db.VarChar(10)
+  refreshToken            String?                   @db.VarChar(255)
+  password                String                    @db.VarChar(255)
+  passwordRt              String?                   @db.VarChar(255)
+  ipv4                    String?
+  isActive                Boolean                   @default(true)
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  user_credit_transaction user_credit_transaction[]
+  user_point_transaction  user_point_transaction[]
+  product_review          product_review[]
+  product                 product[]
+}
+
+model user {
+  id                      Int                       @id @default(autoincrement())
+  avatarPath              String?                   @db.VarChar(255)
+  avatarSrc               String?                   @db.VarChar(255)
+  fname                   String?
+  lname                   String?
+  fullname                String?
+  email                   String                    @unique
+  phone                   String                    @unique @db.VarChar(10)
+  credit                  Float                     @default(0)
+  point                   Float                     @default(0)
+  lineId                  String?
+  baned                   Boolean                   @default(false)
+  ipv4                    String?
+  isActive                Boolean                   @default(true)
+  createdAt               DateTime                  @default(now())
+  updatedAt               DateTime                  @updatedAt
+  address                 address[]
+  user_credit_transaction user_credit_transaction[]
+  payment_transaction     payment_transaction[]
+  user_point_transaction  user_point_transaction[]
+  product_review          product_review[]
+  cart                    cart[]
+  order                   order[]
+  order_product           order_product[]
+}
+
+model user_credit_transaction {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         user     @relation(fields: [userId], references: [id])
+  adminId      Int?
+  admin        admin?   @relation(fields: [adminId], references: [id])
+  updateBy     String
+  updateType   String
+  beforeUpdate Float
+  afterUpdate  Float
+  credit       Float
+  remark       String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model user_point_transaction {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         user     @relation(fields: [userId], references: [id])
+  adminId      Int?
+  admin        admin?   @relation(fields: [adminId], references: [id])
+  updateBy     String
+  updateType   String
+  beforeUpdate Float
+  afterUpdate  Float
+  point        Float
+  remark       String?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model payment_transaction {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      user     @relation(fields: [userId], references: [id])
+  price     Float
+  refCode   String   @unique
+  status    String   @default("pending")
+  base64    String?  @db.Text
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model address {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  user             user     @relation(fields: [userId], references: [id])
+  default          Boolean  @default(false)
+  addressName      String
+  details          String?
+  remarks          String?
+  receiverFname    String
+  receiverLname    String
+  receiverFullname String
+  receiverPhone    String   @db.VarChar(10)
+  houseNo          String
+  villageNo        String?
+  road             String?
+  province         String
+  district         String
+  subDistrict      String
+  postCode         String
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  order            order[]
+}
+
+model brand {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  detail    String?
+  imagePath String?
+  imageSrc  String?
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  product   product[]
+}
+
+model tag {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique
+  detail      String?
+  isActive    Boolean       @default(true)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  product_tag product_tag[]
+}
+
+model category {
+  id           Int            @id @default(autoincrement())
+  name         String
+  detail       String?
+  imagePath    String?
+  imageSrc     String?
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  sub_category sub_category[]
+}
+
+model sub_category {
+  id         Int      @id @default(autoincrement())
+  categoryId Int
+  category   category @relation(fields: [categoryId], references: [id])
+  name       String
+  detail     String?
+  imagePath  String?
+  imageSrc   String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model product_review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      user     @relation(fields: [userId], references: [id])
+  productId Int
+  product   product  @relation(fields: [productId], references: [id])
+  adminId   Int
+  admin     admin    @relation(fields: [adminId], references: [id])
+  detail    String?  @db.Text
+  rating    Int      @default(5)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model review_image {
+  id        Int      @id @default(autoincrement())
+  imagePath String?
+  imageSrc  String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model product {
+  id                    Int                     @id @default(autoincrement())
+  brandId               Int
+  brand                 brand                   @relation(fields: [brandId], references: [id])
+  adminId               Int
+  admin                 admin                   @relation(fields: [adminId], references: [id])
+  name                  String
+  shortName             String?
+  detail                String?
+  isDiscount            Boolean                 @default(false)
+  discountPercent       Int
+  minPrice              Float
+  maxPrice              Float
+  slug                  String
+  cardImgPath           String
+  cardImgSrc            String
+  optionFirst           String?
+  optionSecond          String?
+  isWholesale           Boolean                 @default(false)
+  rating                Int                     @default(0)
+  sold                  Int                     @default(0)
+  isActive              Boolean                 @default(true)
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+  product_image         product_image[]
+  product_spec          product_spec[]
+  product_detail        product_detail[]
+  product_option_first  product_option_first[]
+  product_option_second product_option_second[]
+  product_price         product_price[]
+  product_wholesale     product_wholesale[]
+  product_review        product_review[]
+  product_tag           product_tag[]
+  cart                  cart[]
+  order_product         order_product[]
+}
+
+model product_tag {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  product   product  @relation(fields: [productId], references: [id])
+  tagId     Int
+  tag       tag      @relation(fields: [tagId], references: [id])
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model product_wholesale {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  product   product  @relation(fields: [productId], references: [id])
+  min       Int
+  price     Float
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model product_option_first {
+  id            Int             @id @default(autoincrement())
+  productId     Int
+  product       product         @relation(fields: [productId], references: [id])
+  name          String
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  product_price product_price[]
+}
+
+model product_option_second {
+  id            Int             @id @default(autoincrement())
+  productId     Int
+  product       product         @relation(fields: [productId], references: [id])
+  name          String
+  isActive      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  product_price product_price[]
+}
+
+model product_price {
+  id                      Int                    @id @default(autoincrement())
+  productId               Int
+  product                 product                @relation(fields: [productId], references: [id])
+  product_option_firstId  Int?
+  product_option_first    product_option_first?  @relation(fields: [product_option_firstId], references: [id])
+  product_option_secondId Int?
+  product_option_second   product_option_second? @relation(fields: [product_option_secondId], references: [id])
+  price                   Float
+  sku                     String?                @unique
+  isWholesale             Boolean                @default(false)
+  cart                    cart[]
+  order_product           order_product[]
+}
+
+model product_detail {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  product   product  @relation(fields: [productId], references: [id])
+  name      String
+  details   String?
+  imagePath String?
+  imageSrc  String?
+  videoPath String?
+  videoSrc  String?
+  videoType String?
+  link      String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model product_image {
+  id        Int      @id @default(autoincrement())
+  name      String
+  path      String
+  src       String
+  sequence  Int
+  productId Int
+  product   product  @relation(fields: [productId], references: [id])
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model product_spec {
+  id        Int     @id @default(autoincrement())
+  name      String
+  data      Json
+  productId Int
+  product   product @relation(fields: [productId], references: [id])
+}
+
+model cart {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  user            user          @relation(fields: [userId], references: [id])
+  productId       Int
+  product         product       @relation(fields: [productId], references: [id])
+  product_priceId Int
+  product_price   product_price @relation(fields: [product_priceId], references: [id])
+  qty             Int
+  price           Float
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model order {
+  id                   Int             @id @default(autoincrement())
+  userId               Int
+  user                 user            @relation(fields: [userId], references: [id])
+  statusNow            String          @default("created")
+  status               Json
+  paymentType          String
+  paymentStatus        String          @default("รอการชำระเงิน")
+  createUsing          Float           @default(0)
+  pointUsing           Float           @default(0)
+  orderPrice           Float
+  deliveryPrice        Float
+  netPrice             Float
+  orderDiscount        Float
+  deliveryDiscount     Float
+  orderDiscountCode    String
+  deliveryDiscountCode String
+  addressId            Int
+  address              address         @relation(fields: [addressId], references: [id])
+  addressData          Json
+  userData             Json
+  isReject             Boolean         @default(false)
+  isActive             Boolean         @default(true)
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  order_product        order_product[]
+}
+
+model order_product {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  user            user          @relation(fields: [userId], references: [id])
+  productId       Int
+  product         product       @relation(fields: [productId], references: [id])
+  orderId         Int
+  order           order         @relation(fields: [orderId], references: [id])
+  product_priceId Int
+  product_price   product_price @relation(fields: [product_priceId], references: [id])
+  qty             Int
+  price           Float
+  productData     Json
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model setting {
+  id        Int      @id @default(autoincrement())
+  facebook  String?
+  line      String?
+  instagram String?
+  tiktok    String?
+  email     String?
+  phone     String?  @db.VarChar(10)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model setting_service {
+  id            Int      @id @default(autoincrement())
+  lineNotiToken String?
+  gmpayToken    String?
+  seo           Json?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
