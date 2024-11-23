@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { DatabaseService } from 'src/database/database';
-import { LOGGER } from 'utils/logger';
+import { LOGGER } from 'src/utils/logger';
 
 @Injectable()
 export class AdminService {

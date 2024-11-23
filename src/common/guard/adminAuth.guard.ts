@@ -10,7 +10,7 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { AdminService } from 'src/v1/admin/admin.service';
 import { UserService } from 'src/v1/user/user.service';
-import { JWT, RES } from 'utils';
+import { JWT, RES } from 'src/utils';
 
 @Injectable()
 export class AdminAuthGuard implements CanActivate {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database';
-import { LOGGER } from 'utils/logger';
+import { LOGGER } from 'src/utils/logger';
 import { Prisma } from '@prisma/client';
 
 @Injectable()

@@ -9,7 +9,7 @@ import {
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { UserService } from 'src/v1/user/user.service';
-import { JWT, RES } from 'utils';
+import { JWT, RES } from 'src/utils';
 
 @Injectable()
 export class ClientAuthGuard implements CanActivate {

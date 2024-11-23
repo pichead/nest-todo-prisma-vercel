@@ -1,7 +1,7 @@
 import * as nodemailer from 'nodemailer';
 
 import { env } from '../constant';
-import { HTML } from 'utils/html';
+import { HTML } from 'src/utils/html';
 
 interface Message {
   from: string;

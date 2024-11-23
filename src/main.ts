@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { env } from 'utils/constant';
+import { env } from 'src/utils/constant';
 import { VersioningType } from '@nestjs/common';
 import { CustomInterceptors } from './common/interceptor/response.interceptor';
 import { ExceptionResponse } from './common/exception/exception.exception';

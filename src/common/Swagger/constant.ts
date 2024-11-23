@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { env } from 'utils/constant';
+import { env } from 'src/utils/constant';
 
 const configService = new ConfigService();
 

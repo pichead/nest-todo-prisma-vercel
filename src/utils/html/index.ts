@@ -1,4 +1,4 @@
-import { env } from 'utils/constant';
+import { env } from 'src/utils/constant';
 
 const webname_th = env.appNameTH;
 const webname_en = env.appNameEN;
