@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseService } from 'src/database/database';
+import { DatabaseService } from '../../database/database';
 import { LOGGER } from 'src/utils/logger';
 import { Prisma } from '@prisma/client';
 
