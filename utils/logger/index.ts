@@ -1,5 +1,6 @@
 import { createLogger, format, transports } from "winston";
 import 'winston-daily-rotate-file';
+import { env } from "../constant";
 
 const customLevels = {
     levels: {
@@ -29,7 +30,7 @@ export const LOGGER = createLogger({
         }),
         format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`)
     ),
-    transports: [
+    transports: env.loggerLocal ? [
         new transports.Console(),
         new transports.DailyRotateFile({
             dirname: 'logs',
@@ -39,7 +40,7 @@ export const LOGGER = createLogger({
             maxSize: '20m',
             maxFiles: '14d',
         }),
-    ],
+    ] : []
 });
 
 
