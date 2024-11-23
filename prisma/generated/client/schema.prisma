@@ -1,0 +1,62 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  output          = "./generated/client"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+enum task_status {
+  SUCCESS
+  PENDING
+}
+
+model admin {
+  id         Int      @id @default(autoincrement())
+  avatarPath String?  @db.VarChar(255)
+  avatarSrc  String?  @db.VarChar(255)
+  fname      String?  @db.VarChar(255)
+  lname      String?  @db.VarChar(255)
+  fullname   String?  @db.VarChar(255)
+  email      String   @unique
+  password   String   @db.VarChar(255)
+  phone      String?  @unique @db.VarChar(10)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model user {
+  id         Int      @id @default(autoincrement())
+  avatarPath String?  @db.VarChar(255)
+  avatarSrc  String?  @db.VarChar(255)
+  fname      String?  @db.VarChar(255)
+  lname      String?  @db.VarChar(255)
+  fullname   String?  @db.VarChar(255)
+  email      String   @unique
+  password   String   @db.VarChar(255)
+  phone      String?  @unique @db.VarChar(10)
+  credit     Float    @default(0)
+  point      Float    @default(0)
+  lineId     String?
+  baned      Boolean  @default(false)
+  ipv4       String?
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model task {
+  id            Int         @id @default(autoincrement())
+  name          String      @db.VarChar(255)
+  detail        String?     @db.Text
+  status        task_status @default(PENDING)
+  statusHistory Json?
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
