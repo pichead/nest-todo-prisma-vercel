@@ -8,8 +8,7 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { RES } from 'src/utils';
-import { JWT } from 'src/utils';
+import { RES, JWT } from '../../../utils';
 
 @Injectable()
 export class AdminRefreshGuard implements CanActivate {

@@ -8,10 +8,9 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { UserService } from 'src/v1/user/user.service';
-import { RES } from 'src/utils';
-import { JWT } from 'src/utils';
-import { LOGGER } from 'src/utils/logger';
+import { UserService } from '../../v1/user/user.service';
+import { RES, JWT } from '../../../utils';
+import { LOGGER } from '../../../utils/logger';
 
 @Injectable()
 export class clientRefreshGuard implements CanActivate {

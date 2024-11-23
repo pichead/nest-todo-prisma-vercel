@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { AdminService } from 'src/v1/admin/admin.service';
-import { UserService } from 'src/v1/user/user.service';
-import { JWT, RES } from 'src/utils';
+import { AdminService } from '../../v1/admin/admin.service';
+import { UserService } from '../../v1/user/user.service';
+import { JWT, RES } from '../../../utils';
 
 @Injectable()
 export class AdminAuthGuard implements CanActivate {

@@ -31,7 +31,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
-import { env } from 'src/utils/constant';
+import { env } from '../constant';
 
 const firebaseConfig = {
   apiKey: env.firebaseApiKey,

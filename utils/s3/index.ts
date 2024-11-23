@@ -1,7 +1,7 @@
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { UUID } from 'src/utils/uuid';
+import { UUID } from '../uuid';
 import { extname } from 'path';
-import { env } from 'src/utils/constant';
+import { env } from '../constant';
 
 const AWS_S3_BUCKET = env.s3BucketName;
 const AWS_S3_REGION = env.s3BucketRegion;

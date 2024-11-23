@@ -1,11 +1,11 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto, RegisterDto } from './dto/auth.dto';
-import { LOGGER } from 'src/utils/logger';
-import { JWT, PASSWORD, RES } from 'src/utils';
+import { LOGGER } from '../../../utils/logger';
+import { JWT, PASSWORD, RES } from '../../../utils';
 import { UserService } from '../user/user.service';
-import { ClientAuthGuard } from 'src/common/guard/clientAuth.guard';
-import { clientRefreshGuard } from 'src/common/guard/clientRefresh.guard';
+import { ClientAuthGuard } from '../../common/guard/clientAuth.guard';
+import { clientRefreshGuard } from '../../common/guard/clientRefresh.guard';
 
 
 @Controller('auth')

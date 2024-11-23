@@ -15,7 +15,7 @@ import {
   deleteDoc,
 } from './config';
 
-import { UUID } from 'src/utils/uuid';
+import { UUID } from '../uuid';
 import { extname } from 'path';
 
 // const galleryRef = collection(firestore, "gallery");

@@ -8,14 +8,13 @@ import {
 } from '@nestjs/common';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { UserService } from 'src/v1/user/user.service';
-import { JWT, RES } from 'src/utils';
+import { UserService } from '../../v1/user/user.service';
+import { JWT, RES } from '../../../utils';
 
 @Injectable()
 export class ClientAuthGuard implements CanActivate {
   constructor(
     private readonly userService: UserService
-
   ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
