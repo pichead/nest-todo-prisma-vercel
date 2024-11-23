@@ -6,7 +6,6 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "install-utils": "node ./utils/install-dependencies.js",
     "build": "nest build",
     "postinstall": "prisma generate",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
