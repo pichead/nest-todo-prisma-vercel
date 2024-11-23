@@ -22,10 +22,14 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-
 ## Example deployment
+
 https://nest-todo-prisma-vercel.vercel.app/api/v1/
 
+## Key for setup nest prisma vercel
+
+1.do not use "baseUrl" in tsconfig.json
+2.for prisma injection dependency need to use prisma singleton
 
 ## Description
 
