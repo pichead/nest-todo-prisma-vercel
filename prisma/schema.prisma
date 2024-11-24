@@ -43,10 +43,10 @@ model user {
   point      Float    @default(0)
   lineId     String?
   baned      Boolean  @default(false)
-  ipv4       String?
   isActive   Boolean  @default(true)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  task       task[]
 }
 
 model task {
@@ -54,6 +54,8 @@ model task {
   name          String      @db.VarChar(255)
   detail        String?     @db.Text
   status        task_status @default(PENDING)
+  userId        Int
+  user          user        @relation(fields: [userId], references: [id])
   statusHistory Json?
   isActive      Boolean     @default(true)
   createdAt     DateTime    @default(now())

@@ -28,7 +28,7 @@ https://nest-todo-prisma-vercel.vercel.app/api/v1/
 
 ## Key for setup nest prisma vercel
 
-1.do not use "baseUrl" in tsconfig.json
+1.do not use "baseUrl" in tsconfig.json can comment or ignore and use import normally like "src/main.ts" (using base url)  to "../../src/main.ts" (not using base url)
 
 2.for prisma injection dependency need to use prisma singleton
 
