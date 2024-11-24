@@ -15,7 +15,6 @@ export class AuthController {
     private readonly userService: UserService
   ) { }
 
-
   @Post('login')
   async Login(@Body() loginDto: LoginDto) {
 
@@ -24,6 +23,7 @@ export class AuthController {
       const { email, password } = loginDto
 
       const isExistUser = await this.userService.findByEmail(email)
+      console.log("isExistUser : ",isExistUser)
 
       if (!isExistUser) {
         return RES.error(400, "wrong email or password", "email หรือ password ไม่ถูกต้อง")
@@ -51,13 +51,10 @@ export class AuthController {
       LOGGER.error(error)
       return RES.sysError()
     }
-
-
   }
 
   @Post('register')
   async Register(@Body() registerDto: RegisterDto) {
-
     try {
 
       const { email, password } = registerDto
@@ -74,7 +71,7 @@ export class AuthController {
         return RES.error(400, "error create password", "สร้างรหัสผ่านไม่สำเร็จ")
       }
 
-      const newUser = await this.userService.create(email, password)
+      const newUser = await this.userService.create(email, hashPassword)
 
       if (newUser) {
         return RES.ok(200, "success create user", "สร้างผู้ใช้สำเร็จ", { id: newUser.id, email: newUser.email, createdAt: newUser.createdAt })
@@ -87,10 +84,7 @@ export class AuthController {
       LOGGER.error(error)
       return RES.sysError()
     }
-
-
   }
-
 
   @Get('validate-client')
   @UseGuards(ClientAuthGuard)
@@ -107,8 +101,6 @@ export class AuthController {
     }
 
   }
-
-
 
   @Get('refresh-client')
   @UseGuards(clientRefreshGuard)
@@ -136,31 +128,28 @@ export class AuthController {
   }
 
 
+  // @Post()
+  // create(@Body() createAuthDto) {
+  //   return this.authService.create(createAuthDto);
+  // }
 
+  // @Get()
+  // findAll() {
+  //   return this.authService.findAll();
+  // }
 
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.authService.findOne(+id);
+  // }
 
-  @Post()
-  create(@Body() createAuthDto) {
-    return this.authService.create(createAuthDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateAuthDto) {
+  //   return this.authService.update(+id, updateAuthDto);
+  // }
 
-  @Get()
-  findAll() {
-    return this.authService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuthDto) {
-    return this.authService.update(+id, updateAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.authService.remove(+id);
+  // }
 }
