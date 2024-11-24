@@ -19,15 +19,7 @@ async function bootstrap() {
     defaultVersion: configService.get('API_VERSION') || '1',
   })
   app.setGlobalPrefix(env.apiPrefix)
-  app.enableCors({
-    origin: (origin, callback) => {
-      callback(null, true); // อนุญาตทุก origin
-    },
-    credentials: true, // รองรับการส่ง Cookies หรือ Headers การยืนยันตัวตน
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Headers ที่อนุญาต
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'], // รองรับทุก HTTP methods
-    optionsSuccessStatus: 200, // สำหรับ preflight requests
-  });
+  app.enableCors();
   await app.listen(3333);
   console.log("server is running on : http://localhost:" + env.appPort)
   initializeSwagger(app)
