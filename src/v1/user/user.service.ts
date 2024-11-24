@@ -26,8 +26,6 @@ export class UserService {
   }
 
 
-
-
   async create(email: string, password: string, transaction?: Prisma.TransactionClient | null | undefined) {
     try {
 

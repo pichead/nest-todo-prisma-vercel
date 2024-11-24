@@ -1,26 +1,192 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskDto } from './dto/update-task.dto';
+import { DatabaseService } from '../../database/database';
+import { CreateTaskDto, UpdateTaskDto } from './dto/task.dto';
+import { LOGGER } from '../../../utils/logger';
+import { Prisma } from '@prisma/client';
+
 
 @Injectable()
 export class TaskService {
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+
+  constructor(
+    private readonly db: DatabaseService
+  ) { }
+
+
+  async create(userId: number, createTaskDto: CreateTaskDto, transaction?: Prisma.TransactionClient | null | undefined) {
+
+    try {
+      const dbt = transaction ? transaction : this.db
+
+      return await dbt.task.create({
+        data: { ...createTaskDto, userId }
+      })
+
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
   }
 
-  findAll() {
-    return `This action returns all task`;
+  async findAll(userId: number) {
+    try {
+      return await this.db.task.findMany({
+        where: {
+          userId
+        }
+      })
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  async findAllActive(userId: number) {
+    try {
+      return await this.db.task.findMany({
+        where: {
+          userId,
+          isActive: true
+        }
+      })
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  async findOne(id: number, userId: number) {
+    try {
+      return await this.db.task.findFirst({
+        where: {
+          id,
+          userId
+        }
+      })
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  async update(id: number, userId: number, updateTaskDto: UpdateTaskDto, transaction?: Prisma.TransactionClient | null | undefined) {
+
+    try {
+
+      const dbt = transaction ? transaction : this.db
+      return await dbt.task.update({
+        where: {
+          id,
+          userId
+        },
+        data: updateTaskDto
+      })
+
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
   }
+
+  async removeAll(userId: number, transaction?: Prisma.TransactionClient | null | undefined) {
+    try {
+      const dbt = transaction ? transaction : this.db
+
+      return await dbt.task.updateMany({
+        where: {
+          isActive: true,
+          userId
+        },
+        data: {
+          isActive: false
+        }
+      })
+
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
+  }
+
+  async remove(id: number, userId: number, transaction?: Prisma.TransactionClient | null | undefined) {
+    try {
+      const dbt = transaction ? transaction : this.db
+
+      return await dbt.task.update({
+        where: {
+          id,
+          userId
+        },
+        data: {
+          isActive: false
+        }
+      })
+
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
+  }
+
+  async complete(id: number, userId: number, transaction?: Prisma.TransactionClient | null | undefined) {
+    try {
+
+      const dbt = transaction ? transaction : this.db
+      return await dbt.task.update({
+        where: {
+          id,
+          userId
+        },
+        data: {
+          status: "SUCCESS"
+        }
+      })
+
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
+  }
+
+  async pending(id: number, userId: number, transaction?: Prisma.TransactionClient | null | undefined) {
+    try {
+
+      const dbt = transaction ? transaction : this.db
+      return await dbt.task.update({
+        where: {
+          id,
+          userId
+        },
+        data: {
+          status: "PENDING"
+        }
+      })
+
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
+  }
+
+  async removeComplete(userId: number, transaction?: Prisma.TransactionClient | null | undefined) {
+    try {
+
+      const dbt = transaction ? transaction : this.db
+      return await dbt.task.updateMany({
+        where: {
+          status: "SUCCESS",
+          userId
+        },
+        data: {
+          isActive: false
+        }
+      })
+
+    } catch (error) {
+      LOGGER.error(error)
+      return null
+    }
+  }
+
+
 }

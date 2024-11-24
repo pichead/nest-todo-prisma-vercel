@@ -34,7 +34,6 @@ CREATE TABLE "user" (
     "point" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "lineId" TEXT,
     "baned" BOOLEAN NOT NULL DEFAULT false,
-    "ipv4" TEXT,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -48,6 +47,7 @@ CREATE TABLE "task" (
     "name" VARCHAR(255) NOT NULL,
     "detail" TEXT,
     "status" "task_status" NOT NULL DEFAULT 'PENDING',
+    "userId" INTEGER NOT NULL,
     "statusHistory" JSONB,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -67,3 +67,6 @@ CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_phone_key" ON "user"("phone");
+
+-- AddForeignKey
+ALTER TABLE "task" ADD CONSTRAINT "task_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
