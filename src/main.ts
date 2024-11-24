@@ -20,11 +20,13 @@ async function bootstrap() {
   })
   app.setGlobalPrefix(env.apiPrefix)
   app.enableCors({
-    credentials: true,
-    origin: 'https://nextjs-todo-redux.vercel.app',
-    optionsSuccessStatus: 200,
-    allowedHeaders: '*',
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
+    origin: (origin, callback) => {
+      callback(null, true); // อนุญาตทุก origin
+    },
+    credentials: true, // รองรับการส่ง Cookies หรือ Headers การยืนยันตัวตน
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Headers ที่อนุญาต
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'], // รองรับทุก HTTP methods
+    optionsSuccessStatus: 200, // สำหรับ preflight requests
   });
   await app.listen(3333);
   console.log("server is running on : http://localhost:" + env.appPort)
