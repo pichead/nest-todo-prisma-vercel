@@ -21,7 +21,7 @@ async function bootstrap() {
   app.setGlobalPrefix(env.apiPrefix)
   app.enableCors({
     credentials: true,
-    // origin: [...configService.get('ORIGIN').split(', ')],
+    origin: 'https://nextjs-todo-redux.vercel.app',
     optionsSuccessStatus: 200,
     allowedHeaders: '*',
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE']
