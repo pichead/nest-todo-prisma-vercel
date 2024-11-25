@@ -11,6 +11,7 @@ const exceptRes = new ExceptionResponse();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
   const configService = app.get<ConfigService>(ConfigService);
   app.useGlobalInterceptors(new CustomInterceptors(exceptRes));
 
@@ -19,7 +20,7 @@ async function bootstrap() {
     defaultVersion: configService.get('API_VERSION') || '1',
   })
   app.setGlobalPrefix(env.apiPrefix)
-  app.enableCors();
+
   await app.listen(3333);
   console.log("server is running on : http://localhost:" + env.appPort)
   initializeSwagger(app)
